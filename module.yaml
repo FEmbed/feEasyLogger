@@ -1,0 +1,14 @@
+name: feEasyLogger
+type: src
+files:
+    includes:
+        feEasyLogger:
+        - EasyLogger/easylogger/inc
+    sources:
+        feEasyLogger:
+        - EasyLogger/easylogger/src
+portable:
+    config:
+    - EasyLogger/easylogger/inc/elog_cfg.h
+    port:
+    - EasyLogger/easylogger/port
