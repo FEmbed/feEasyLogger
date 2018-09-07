@@ -4,11 +4,16 @@ files:
     includes:
         feEasyLogger:
         - EasyLogger/easylogger/inc
+        feEasyLoggerSegger:
+        - Segger
     sources:
         feEasyLogger:
         - EasyLogger/easylogger/src
+        feEasyLoggerSegger:
+        - Segger
 portable:
     config:
     - EasyLogger/easylogger/inc/elog_cfg.h
+    - Segger/SEGGER_RTT_Conf.h
     port:
-    - EasyLogger/easylogger/port
+    - Segger/elog_port.c
