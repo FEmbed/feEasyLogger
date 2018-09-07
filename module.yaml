@@ -16,4 +16,4 @@ portable:
     - EasyLogger/easylogger/inc/elog_cfg.h
     - Segger/SEGGER_RTT_Conf.h
     port:
-    - Segger/elog_port.c
+    - port
