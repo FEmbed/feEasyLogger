@@ -1,0 +1,58 @@
+config EASYLOGGER
+    bool "Enable Easy Logger for SDK"
+    default y
+    help
+        Enable easylogger for SDK environment or not.
+
+config EASYLOGGER_JLINK_LOG
+    depends on EASYLOGGER
+    bool "Enable log to JLink RTT View"
+    default y
+    help
+        Enable Log Output to JLink RTT View.
+
+choice
+    prompt "Easy Logger Output Level"
+    depends on EASYLOGGER
+    default EASYLOGGER_LVL_3
+
+    config EASYLOGGER_LVL_0
+        bool "EASYLOGGER_ASSERT"
+    config EASYLOGGER_LVL_1
+        bool "EASYLOGGER_ERROR"
+    config EASYLOGGER_LVL_2
+        bool "EASYLOGGER_WARN"
+    config EASYLOGGER_LVL_3
+        bool "EASYLOGGER_INFO"
+    config EASYLOGGER_LVL_4
+        bool "EASYLOGGER_DEBUG"
+    config EASYLOGGER_LVL_5
+        bool "EASYLOGGER_VERBOSE"
+endchoice
+
+config EASYLOGGER_LVL
+    int
+    default 0 if EASYLOGGER_LVL_0
+    default 1 if EASYLOGGER_LVL_1
+    default 2 if EASYLOGGER_LVL_2
+    default 3 if EASYLOGGER_LVL_3
+    default 4 if EASYLOGGER_LVL_4
+    default 5 if EASYLOGGER_LVL_5
+
+config EASYLOGGER_BUFFER_SIZE
+    int "Easy Logger Buffer Size"
+    default 256
+    help
+        Config buffer size for each line
+
+config EASYLOGGER_COLOR
+    bool "Enable Easy Logger Color Output"
+    default n
+    help
+        Change the some level logs to not default color if you want
+
+config EASYLOGGER_ASYNC_THREAD
+    depends on RTOS_LIB_FREERTOS
+    bool "Use FreeRTOS thread output"
+    default n
+

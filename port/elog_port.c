@@ -28,7 +28,7 @@
  
 #include <elog.h>
 
-#ifdef DEBUG_WITH_SEGGER
+#ifdef CONFIG_EASYLOGGER_JLINK_LOG
 
 #include "SEGGER_RTT.h"
 #define SEGGER_SYSVIEW_RTT_BUFFER_SIZE      1024                                // Number of bytes that SystemView uses for the buffer.
@@ -49,7 +49,7 @@ static char _DownBuffer[8];  // Small, fixed-size buffer, for back-channel comms
 ElogErrCode elog_port_init(void) {
     ElogErrCode result = ELOG_NO_ERR;
 
-#ifdef DEBUG_WITH_SEGGER
+#ifdef CONFIG_EASYLOGGER_JLINK_LOG
     SEGGER_RTT_ConfigUpBuffer   (SEGGER_SYSVIEW_RTT_CHANNEL, "SysView", &_UpBuffer[0],   sizeof(_UpBuffer),   SEGGER_RTT_MODE_NO_BLOCK_SKIP);
     SEGGER_RTT_ConfigDownBuffer (SEGGER_SYSVIEW_RTT_CHANNEL, "SysView", &_DownBuffer[0], sizeof(_DownBuffer), SEGGER_RTT_MODE_NO_BLOCK_SKIP);
     SEGGER_RTT_Init();
@@ -65,7 +65,7 @@ ElogErrCode elog_port_init(void) {
  * @param size log size
  */
 void elog_port_output(const char *log, size_t size) {
-#ifdef DEBUG_WITH_SEGGER
+#ifdef CONFIG_EASYLOGGER_JLINK_LOG
     SEGGER_RTT_Write(0, log, size);
 #endif
 }
@@ -74,9 +74,9 @@ void elog_port_output(const char *log, size_t size) {
  * output lock
  */
 void elog_port_output_lock(void) {
-    
+
     /* add your code here */
-    
+
 }
 
 /**

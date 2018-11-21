@@ -32,13 +32,13 @@
 /* enable log output. */
 #define ELOG_OUTPUT_ENABLE
 /* setting static output log level. range: from ELOG_LVL_ASSERT to ELOG_LVL_VERBOSE */
-#define ELOG_OUTPUT_LVL                          ELOG_LVL_VERBOSE
+#define ELOG_OUTPUT_LVL                          CONFIG_EASYLOGGER_LVL
 /* enable assert check */
 #define ELOG_ASSERT_ENABLE
 /* buffer size for every line's log */
-#define ELOG_LINE_BUF_SIZE                       256
+#define ELOG_LINE_BUF_SIZE                       CONFIG_EASYLOGGER_BUFFER_SIZE
 /* output line number max length */
-#define ELOG_LINE_NUM_MAX_LEN                    5
+#define ELOG_LINE_NUM_MAX_LEN                    8
 /* output filter's tag max length */
 #define ELOG_FILTER_TAG_MAX_LEN                  30
 /* output filter's keyword max length */
@@ -46,6 +46,7 @@
 /* output newline sign */
 #define ELOG_NEWLINE_SIGN                        "\n"
 /*---------------------------------------------------------------------------*/
+#if CONFIG_EASYLOGGER_COLOR
 /* enable log color */
 #define ELOG_COLOR_ENABLE
 /* change the some level logs to not default color if you want */
@@ -55,21 +56,31 @@
 #define ELOG_COLOR_INFO                          (F_CYAN B_NULL S_NORMAL)
 #define ELOG_COLOR_DEBUG                         (F_GREEN B_NULL S_NORMAL)
 #define ELOG_COLOR_VERBOSE                       (F_BLUE B_NULL S_NORMAL)
+#endif
+
 /*---------------------------------------------------------------------------*/
 /* enable asynchronous output mode */
+
+#ifdef CONFIG_EASYLOGGER_ASYNC_THREAD__
+#define ELOG_ASYNC_OUTPUT_ENABLE
+#else
 #define ELOG_ASYNC_OUTPUT_DISABLE
+#endif
 /* the highest output level for async mode, other level will sync output */
-#define ELOG_ASYNC_OUTPUT_LVL                    ELOG_LVL_ASSERT
+#define ELOG_ASYNC_OUTPUT_LVL                    CONFIG_EASYLOGGER_LVL
 /* buffer size for asynchronous output mode */
 #define ELOG_ASYNC_OUTPUT_BUF_SIZE               (ELOG_LINE_BUF_SIZE * 10)
 /* each asynchronous output's log which must end with newline sign */
 #define ELOG_ASYNC_LINE_OUTPUT
 /* asynchronous output mode using POSIX pthread implementation */
-#define ELOG_ASYNC_OUTPUT_USING_PTHREAD
+
+//#define ELOG_ASYNC_OUTPUT_USING_PTHREAD
+#define ELOG_ASYNC_OUTPUT_USING_FREERTOS
 /*---------------------------------------------------------------------------*/
 /* enable buffered output mode */
 //#define ELOG_BUF_OUTPUT_ENABLE
 /* buffer size for buffered output mode */
-//#define ELOG_BUF_OUTPUT_BUF_SIZE                 (ELOG_LINE_BUF_SIZE * 10)
+#define ELOG_BUF_OUTPUT_BUF_SIZE                 (ELOG_LINE_BUF_SIZE * 10)
 
+#define LOG_LVL                                  ELOG_OUTPUT_LVL
 #endif /* _ELOG_CFG_H_ */
