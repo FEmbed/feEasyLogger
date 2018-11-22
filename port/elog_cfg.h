@@ -61,7 +61,7 @@
 /*---------------------------------------------------------------------------*/
 /* enable asynchronous output mode */
 
-#ifdef CONFIG_EASYLOGGER_ASYNC_THREAD__
+#ifdef CONFIG_EASYLOGGER_ASYNC_THREAD
 #define ELOG_ASYNC_OUTPUT_ENABLE
 #else
 #define ELOG_ASYNC_OUTPUT_DISABLE

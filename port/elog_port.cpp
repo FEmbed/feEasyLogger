@@ -41,12 +41,17 @@ static char _DownBuffer[8];  // Small, fixed-size buffer, for back-channel comms
 
 #endif
 
+#if USE_OSLIB
+#include "osMutex.h"
+fastembedded::OSMutex *log_mutex;
+#endif
+
 /**
  * EasyLogger port initialize
  *
  * @return result
  */
-ElogErrCode elog_port_init(void) {
+extern "C" ElogErrCode elog_port_init(void) {
     ElogErrCode result = ELOG_NO_ERR;
 
 #ifdef CONFIG_EASYLOGGER_JLINK_LOG
@@ -54,7 +59,11 @@ ElogErrCode elog_port_init(void) {
     SEGGER_RTT_ConfigDownBuffer (SEGGER_SYSVIEW_RTT_CHANNEL, "SysView", &_DownBuffer[0], sizeof(_DownBuffer), SEGGER_RTT_MODE_NO_BLOCK_SKIP);
     SEGGER_RTT_Init();
 #endif
-    
+#if USE_OSLIB
+    log_mutex = new fastembedded::OSMutex();
+    assert(log_mutex);
+#endif
+
     return result;
 }
 
@@ -64,28 +73,25 @@ ElogErrCode elog_port_init(void) {
  * @param log output of log
  * @param size log size
  */
-void elog_port_output(const char *log, size_t size) {
+extern "C" void elog_port_output(const char *log, size_t size) {
 #ifdef CONFIG_EASYLOGGER_JLINK_LOG
     SEGGER_RTT_Write(0, log, size);
 #endif
 }
 
-/**
- * output lock
- */
-void elog_port_output_lock(void) {
-
-    /* add your code here */
-
+extern "C" void elog_port_output_lock(void) {
+#if USE_OSLIB
+	log_mutex->lock();
+#endif
 }
 
 /**
  * output unlock
  */
-void elog_port_output_unlock(void) {
-    
-    /* add your code here */
-    
+extern "C" void elog_port_output_unlock(void) {
+#if USE_OSLIB
+	log_mutex->unlock();
+#endif
 }
 
 /**
@@ -93,7 +99,7 @@ void elog_port_output_unlock(void) {
  *
  * @return current time
  */
-const char *elog_port_get_time(void) {
+extern "C" const char *elog_port_get_time(void) {
     return "0:0";
 }
 
@@ -102,7 +108,7 @@ const char *elog_port_get_time(void) {
  *
  * @return current process name
  */
-const char *elog_port_get_p_info(void) {
+extern "C" const char *elog_port_get_p_info(void) {
     return "P";
 }
 
@@ -111,6 +117,6 @@ const char *elog_port_get_p_info(void) {
  *
  * @return current thread name
  */
-const char *elog_port_get_t_info(void) {
+extern "C" const char *elog_port_get_t_info(void) {
     return "T";
 }
