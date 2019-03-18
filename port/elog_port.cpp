@@ -42,7 +42,7 @@ static char _DownBuffer[8];  // Small, fixed-size buffer, for back-channel comms
 #if USE_OSLIB
 #include "osTask.h"
 #include "osMutex.h"
-fastembedded::OSMutex *log_mutex;
+FEmbed::OSMutex *log_mutex;
 #endif
 
 /**
@@ -59,7 +59,7 @@ extern "C" ElogErrCode elog_port_init(void) {
     SEGGER_RTT_Init();
 #endif
 #if USE_OSLIB
-    log_mutex = new fastembedded::OSMutex();
+    log_mutex = new FEmbed::OSMutex();
     assert(log_mutex);
 #endif
 
@@ -101,7 +101,7 @@ extern "C" void elog_port_output_unlock(void) {
 extern "C" const char *elog_port_get_time(void) {
 #if USE_OSLIB
 	static char time_str[32];
-	sprintf(time_str, "%d", fastembedded::OSTask::currentTick());
+	sprintf(time_str, "%d", FEmbed::OSTask::currentTick());
 	return time_str;
 #else
     return "0:0";
@@ -116,7 +116,7 @@ extern "C" const char *elog_port_get_time(void) {
 extern "C" const char *elog_port_get_p_info(void) {
 #if USE_OSLIB
 	static char name[configMAX_TASK_NAME_LEN];
-	fastembedded::OSTask *task = fastembedded::OSTask::currentTask();
+	FEmbed::OSTask *task = FEmbed::OSTask::currentTask();
 	if(task)
 	{
 		sprintf(name, "%s", task->name());
