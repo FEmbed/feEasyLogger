@@ -154,4 +154,4 @@ extern "C" void elog_global_init()
     elog_start();
 }
 
-FE_INIT(elog_global_init)
+FE_INIT(elog_global_init, 1)
